@@ -14,7 +14,7 @@ public class PatientRepository {
     private final List<Patient> patients = new ArrayList<>();
 
     public List<Patient> findAll() {
-        return patients;
+        return new ArrayList<>(patients);
     }
 
     public Patient findByEmail(String email) {
@@ -32,12 +32,13 @@ public class PatientRepository {
     }
 
     public void update(String email, Patient updatedPatient) {
-        for (int i = 0; i < patients.size(); i++) {
-            if (patients.get(i).getEmail().equals(email)) {
-                patients.set(i, updatedPatient);
-                return;
-            }
-        }
+        patients.stream()
+                .filter(patient -> patient.getEmail().equals(email))
+                .findFirst()
+                .ifPresent(patient -> {
+                    int index = patients.indexOf(patient);
+                    patients.set(index, updatedPatient);
+                });
     }
 }
 
