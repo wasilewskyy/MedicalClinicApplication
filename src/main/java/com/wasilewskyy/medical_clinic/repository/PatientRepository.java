@@ -2,6 +2,7 @@ package com.wasilewskyy.medical_clinic.repository;
 
 import com.wasilewskyy.medical_clinic.model.Password;
 import com.wasilewskyy.medical_clinic.model.Patient;
+import com.wasilewskyy.medical_clinic.validation.PatientValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -26,7 +27,7 @@ public class PatientRepository {
     }
 
     public void save(Patient patient) {
-        if (findByEmail(patient.getEmail()) != null) {
+        if (findByEmail(patient.getEmail()).isPresent()) {
             throw new IllegalArgumentException("Patient with email " + patient.getEmail() + " already exists");
         }
         patients.add(patient);
@@ -37,13 +38,11 @@ public class PatientRepository {
     }
 
     public void update(String email, Patient updatedPatient) {
-        patients.stream()
-                .filter(patient -> patient.getEmail().equals(email))
-                .findFirst()
-                .ifPresent(patient -> {
-                    int index = patients.indexOf(patient);
-                    patients.set(index, updatedPatient);
-                });
+        Patient patient = findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("Patient with email " + email + " does not exist"));
+        PatientValidator.validateUpdate(patient, updatedPatient);
+        PatientValidator.validateEmailUpdate(patient, updatedPatient);
+        patient.updatePatient(patient);
     }
 
     public Patient changePassword(String email, Password password) {

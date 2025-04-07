@@ -20,12 +20,12 @@ public class PatientService {
         return patientRepository.findAll();
     }
 
-    public Patient getPatientByEmail(String email) {
+    public Optional<Patient> getPatientByEmail(String email) {
         return patientRepository.findByEmail(email);
     }
 
     public Patient addPatient(Patient patient) {
-        PatientValidator.validateNewPatient(patient);
+        PatientValidator.validateNewPatient(patient, patientRepository);
         patientRepository.save(patient);
         return patient;
     }
@@ -35,16 +35,20 @@ public class PatientService {
     }
 
     public Patient updatePatient(String email, Patient updatedPatient) {
-        Patient existingPatient = patientRepository.findByEmail(email);
-        if (existingPatient == null) {
+        Optional<Patient> existingPatient = patientRepository.findByEmail(email);
+        if (existingPatient.isEmpty()) {
             throw new IllegalArgumentException("Patient with this email does not exist");
         }
-        PatientValidator.validateUpdate(existingPatient, updatedPatient);
+        PatientValidator.validateUpdate(existingPatient.orElse(null), updatedPatient);
+        PatientValidator.validateEmailUpdate(updatedPatient, existingPatient.get());
         patientRepository.update(email, updatedPatient);
         return updatedPatient;
     }
 
     public Patient changePassword(String email, Password password) {
+        if (password.getPassword() == null || password.getPassword().isEmpty()) {
+            throw new IllegalArgumentException("Password cannot be empty");
+        }
         return patientRepository.changePassword(email, password);
     }
 }
