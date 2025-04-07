@@ -1,5 +1,6 @@
 package com.wasilewskyy.medical_clinic.repository;
 
+import com.wasilewskyy.medical_clinic.model.Password;
 import com.wasilewskyy.medical_clinic.model.Patient;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -19,7 +20,8 @@ public class PatientRepository {
     }
 
     public Optional<Patient> findByEmail(String email) {
-        return patients.stream().filter(p -> p.getEmail().equals(email))
+        return patients.stream()
+                .filter(p -> p.getEmail().equals(email))
                 .findFirst();
     }
 
@@ -42,6 +44,13 @@ public class PatientRepository {
                     int index = patients.indexOf(patient);
                     patients.set(index, updatedPatient);
                 });
+    }
+
+    public Patient changePassword(String email, Password password) {
+        Patient patient = findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("Patient with email " + email + " does not exist"));
+        patient.setPassword(password.getPassword());
+        return patient;
     }
 }
 

@@ -1,5 +1,6 @@
 package com.wasilewskyy.medical_clinic.service;
 
+import com.wasilewskyy.medical_clinic.model.Password;
 import com.wasilewskyy.medical_clinic.model.Patient;
 import com.wasilewskyy.medical_clinic.repository.PatientRepository;
 import com.wasilewskyy.medical_clinic.validation.PatientValidator;
@@ -41,5 +42,9 @@ public class PatientService {
         PatientValidator.validateUpdate(existingPatient, updatedPatient);
         patientRepository.update(email, updatedPatient);
         return updatedPatient;
+    }
+
+    public Patient changePassword(String email, Password password) {
+        return patientRepository.changePassword(email, password);
     }
 }

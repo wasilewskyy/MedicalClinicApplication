@@ -1,5 +1,6 @@
 package com.wasilewskyy.medical_clinic.controller;
 
+import com.wasilewskyy.medical_clinic.model.Password;
 import com.wasilewskyy.medical_clinic.model.Patient;
 import com.wasilewskyy.medical_clinic.service.PatientService;
 import lombok.RequiredArgsConstructor;
@@ -37,6 +38,11 @@ public class PatientController {
     @PutMapping("/{email}")
     public Patient updatePatient(@PathVariable String email, @RequestBody Patient patient) {
         return patientService.updatePatient(email, patient);
+
+    }
+
+    @PatchMapping("/{email}")
+    public Patient changePassword(@PathVariable String email, @RequestBody Password password) {
+        return patientService.changePassword(email, password);
     }
 }
-
