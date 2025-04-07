@@ -20,8 +20,9 @@ public class PatientService {
         return patientRepository.findAll();
     }
 
-    public Optional<Patient> getPatientByEmail(String email) {
-        return patientRepository.findByEmail(email);
+    public Patient getPatientByEmail(String email) {
+        return patientRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("Patient with given email does not exist."));
     }
 
     public Patient addPatient(Patient patient) {
@@ -39,7 +40,8 @@ public class PatientService {
         if (existingPatient.isEmpty()) {
             throw new IllegalArgumentException("Patient with this email does not exist");
         }
-        PatientValidator.validateUpdate(existingPatient.orElse(null), updatedPatient);
+        PatientValidator.validateUpdate(existingPatient.
+                orElseThrow(() -> new IllegalArgumentException("Patient with given email does not exist.")), updatedPatient);
         PatientValidator.validateEmailUpdate(updatedPatient, existingPatient.get());
         patientRepository.update(email, updatedPatient);
         return updatedPatient;
