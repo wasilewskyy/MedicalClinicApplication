@@ -36,13 +36,10 @@ public class PatientService {
     }
 
     public Patient updatePatient(String email, Patient updatedPatient) {
-        Optional<Patient> existingPatient = patientRepository.findByEmail(email);
-        if (existingPatient.isEmpty()) {
-            throw new IllegalArgumentException("Patient with this email does not exist");
-        }
-        PatientValidator.validateUpdate(existingPatient.
-                orElseThrow(() -> new IllegalArgumentException("Patient with given email does not exist.")), updatedPatient);
-        PatientValidator.validateEmailUpdate(updatedPatient, existingPatient.get());
+        Patient existingPatient = patientRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("Patient with given email does not exist"));
+        PatientValidator.validateUpdate(existingPatient, updatedPatient);
+        PatientValidator.validateEmailUpdate(updatedPatient, existingPatient);
         patientRepository.update(email, updatedPatient);
         return updatedPatient;
     }
