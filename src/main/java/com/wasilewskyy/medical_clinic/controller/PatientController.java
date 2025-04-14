@@ -18,23 +18,24 @@ import java.util.stream.Collectors;
 public class PatientController {
 
     private final PatientService patientService;
+    private final PatientMapper patientMapper;
 
     @GetMapping
     public List<PatientDTO> getAllPatients() {
         return patientService.getAllPatients()
                 .stream()
-                .map(PatientMapper::toDTO)
+                .map(patientMapper::toDTO)
                 .collect(Collectors.toList());
     }
 
     @GetMapping("/{email}")
     public PatientDTO getPatientByEmail(@PathVariable String email) {
-        return PatientMapper.toDTO(patientService.getPatientByEmail(email));
+        return patientMapper.toDTO(patientService.getPatientByEmail(email));
     }
 
     @PostMapping
     public PatientDTO addPatient(@RequestBody CreatePatientCommand command) {
-        return PatientMapper.toDTO(patientService.addPatient(PatientMapper.toPatient(command)));
+        return patientMapper.toDTO(patientService.addPatient(patientMapper.toPatient(command)));
     }
 
     @DeleteMapping("/{email}")
@@ -44,17 +45,17 @@ public class PatientController {
 
     @PutMapping("/{email}")
     public PatientDTO updatePatient(@PathVariable String email, @RequestBody CreatePatientCommand patientCommand) {
-        return PatientMapper.toDTO(patientService.updatePatient(email, PatientMapper.toPatient(patientCommand)));
+        return patientMapper.toDTO(patientService.updatePatient(email, patientMapper.toPatient(patientCommand)));
 
     }
 
     @PatchMapping("/{email}/password")
     public PatientDTO changePassword(@PathVariable String email, @RequestBody Password password) {
-        return PatientMapper.toDTO(patientService.changePassword(email, password));
+        return patientMapper.toDTO(patientService.changePassword(email, password));
     }
 
     @PostMapping
     public PatientDTO createPatient(@RequestBody CreatePatientCommand command) {
-        return PatientMapper.toDTO(patientService.addPatient(PatientMapper.toPatient(command)));
+        return patientMapper.toDTO(patientService.addPatient(patientMapper.toPatient(command)));
     }
 }

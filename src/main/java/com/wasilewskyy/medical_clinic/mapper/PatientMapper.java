@@ -3,17 +3,16 @@ package com.wasilewskyy.medical_clinic.mapper;
 import com.wasilewskyy.medical_clinic.model.CreatePatientCommand;
 import com.wasilewskyy.medical_clinic.model.Patient;
 import com.wasilewskyy.medical_clinic.model.PatientDTO;
+import org.mapstruct.Mapper;
+import org.springframework.web.bind.annotation.Mapping;
 
-public class PatientMapper {
-    public static PatientDTO toDTO(Patient patient) {
-        return new PatientDTO(patient.getFirstName(), patient.getLastName(),
-                patient.getEmail(), patient.getPhoneNumber(), patient.getBirthday());
+@Mapper(componentModel = "spring")
+public interface PatientMapper {
 
-    }
+    PatientDTO toDTO(Patient patient);
 
-    public static Patient toPatient(CreatePatientCommand command) {
-        return new Patient(command.getEmail(), command.getPassword(), command.getIdCardNo(), command.getFirstName(),
-                command.getLastName(), command.getPhoneNumber(), command.getBirthday());
+    @Mapping(target = "user.username", source = "username")
+    @Mapping(target = "user.password", source = "password")
+    Patient toPatient(CreatePatientCommand command);
 
-    }
 }

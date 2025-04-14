@@ -48,7 +48,7 @@ public class PatientRepository {
     public Patient changePassword(String email, Password password) {
         Patient patient = findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("Patient with email " + email + " does not exist"));
-        patient.setPassword(password.getPassword());
+        patient.getUser().setPassword(password.getPassword());
         return patient;
     }
 }

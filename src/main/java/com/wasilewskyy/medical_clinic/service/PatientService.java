@@ -2,7 +2,6 @@ package com.wasilewskyy.medical_clinic.service;
 
 import com.wasilewskyy.medical_clinic.model.Password;
 import com.wasilewskyy.medical_clinic.model.Patient;
-import com.wasilewskyy.medical_clinic.model.PatientDTO;
 import com.wasilewskyy.medical_clinic.repository.PatientRepository;
 import com.wasilewskyy.medical_clinic.validation.PatientValidator;
 import lombok.RequiredArgsConstructor;
