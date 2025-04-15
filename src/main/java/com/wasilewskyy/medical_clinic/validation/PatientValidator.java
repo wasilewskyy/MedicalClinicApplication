@@ -14,7 +14,8 @@ public final class PatientValidator {
         if (patient.getIdCardNo() == null || patient.getFirstName() == null
                 || patient.getLastName() == null || patient.getBirthday() == null
                 || patient.getPhoneNumber() == null || patient.getEmail() == null
-                || patient.getPassword() == null) {
+                || patient.getUser() == null || patient.getUser().getPassword() == null
+                || patient.getUser().getUsername() == null) {
             throw new IllegalArgumentException("None of the patient fields can be blank.");
         }
         Optional<Patient> entityPatient = patientRepository.findByEmail(patient.getEmail());
@@ -30,7 +31,8 @@ public final class PatientValidator {
         if (newPatient.getIdCardNo() == null || newPatient.getFirstName() == null
                 || newPatient.getLastName() == null || newPatient.getBirthday() == null
                 || newPatient.getPhoneNumber() == null || newPatient.getEmail() == null
-                || newPatient.getPassword() == null) {
+                || patient.getUser() == null || patient.getUser().getPassword() == null
+                || patient.getUser().getUsername() == null) {
             throw new IllegalArgumentException("None of the updated patient fields can be blank.");
         }
     }

@@ -2,9 +2,9 @@ package com.wasilewskyy.medical_clinic.exception;
 
 import org.springframework.http.HttpStatus;
 
-public class PatientNotFoundException extends MedicalClinicException {
+public class UserNotFoundException extends MedicalClinicException {
 
-    public PatientNotFoundException(String message) {
+    public UserNotFoundException(String message) {
         super(message, HttpStatus.NOT_FOUND);
     }
 }

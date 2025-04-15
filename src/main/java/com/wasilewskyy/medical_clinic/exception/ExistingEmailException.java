@@ -1,8 +1,10 @@
 package com.wasilewskyy.medical_clinic.exception;
 
-public class ExistingEmailException extends RuntimeException {
+import org.springframework.http.HttpStatus;
+
+public class ExistingEmailException extends MedicalClinicException {
 
     public ExistingEmailException(String message) {
-        super("Patient with this email address already exist." + message);
+        super(message, HttpStatus.BAD_REQUEST);
     }
 }
