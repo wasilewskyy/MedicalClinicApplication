@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name="PATIENT")
+@Table(name="patient")
 public class Patient {
 
     @Column(name="PATIENT_EMAIL",unique=false, nullable=false)
@@ -33,7 +33,8 @@ public class Patient {
     @Temporal(TemporalType.DATE)
     private LocalDate birthday;
 
-    @Transient
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "USER_ID", referencedColumnName = "ID")
     private User user;
 
     public void updatePatient(Patient patient) {
