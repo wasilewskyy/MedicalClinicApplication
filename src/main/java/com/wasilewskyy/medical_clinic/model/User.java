@@ -13,15 +13,9 @@ import lombok.NoArgsConstructor;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
-
-    @Column
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String username;
-
-    @Column
     private String password;
 
-    @OneToOne(mappedBy = "user")
-    private Patient patient;
 }

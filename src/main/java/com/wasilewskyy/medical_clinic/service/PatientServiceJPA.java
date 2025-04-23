@@ -1,5 +1,6 @@
 package com.wasilewskyy.medical_clinic.service;
 
+import com.wasilewskyy.medical_clinic.model.CreatePatientCommand;
 import com.wasilewskyy.medical_clinic.model.Patient;
 import com.wasilewskyy.medical_clinic.repository.PatientRepositoryJPA;
 import lombok.RequiredArgsConstructor;
@@ -33,10 +34,10 @@ public class PatientServiceJPA {
         patientRepositoryJPA.delete(existingPatient);
     }
 
-    public Patient updatePatient(String email, Patient updatedPatient) {
+    public Patient updatePatient(String email, Patient updatedPatient, CreatePatientCommand command) {
         Patient existingPatient = patientRepositoryJPA.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("Patient with this email " + email +"does not exist"));
-        patientRepositoryJPA.save(updatedPatient);
+        existingPatient.updateFromCommand(command);
         return patientRepositoryJPA.save(existingPatient);
     }
 }

@@ -14,27 +14,20 @@ import java.time.LocalDate;
 @Table(name="patient")
 public class Patient {
 
-    @Column(name="PATIENT_EMAIL",unique=false, nullable=false)
-    private String email;
-
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long idCardNo;
-
-    @Column(name="PATIENT_NAME",unique = false, nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String email;
+    private String idCardNo;
     private String firstName;
-
-    @Column(name="PATIENT_SURNAME",unique = false, nullable = false)
     private String lastName;
-
-    @Column(name="PATIENT_PHONE_NUMBER",unique = false, nullable = false)
     private String phoneNumber;
 
     @Temporal(TemporalType.DATE)
     private LocalDate birthday;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "USER_ID", referencedColumnName = "ID")
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
     public void updatePatient(Patient patient) {
@@ -46,4 +39,14 @@ public class Patient {
         this.birthday = patient.getBirthday();
         this.user = patient.getUser();
     }
+
+    public void updateFromCommand(CreatePatientCommand command) {
+        this.firstName = command.getFirstName();
+        this.lastName = command.getLastName();
+        this.email = command.getEmail();
+        this.phoneNumber = command.getPhoneNumber();
+        this.birthday = command.getBirthday();
+        this.idCardNo = command.getIdCardNo();
+    }
+
 }
