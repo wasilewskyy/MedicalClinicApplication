@@ -4,8 +4,10 @@ import com.wasilewskyy.medical_clinic.model.CreatePatientCommand;
 import com.wasilewskyy.medical_clinic.model.Patient;
 import com.wasilewskyy.medical_clinic.repository.PatientRepositoryJPA;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
+import java.awt.print.Pageable;
 import java.util.List;
 
 @Service
@@ -14,8 +16,8 @@ public class PatientServiceJPA {
 
     private final PatientRepositoryJPA patientRepositoryJPA;
 
-    public List<Patient> getAllPatients() {
-        return patientRepositoryJPA.findAll();
+    public Page<Patient> getAllPatients(Pageable pageable) {
+        return patientRepositoryJPA.findAll(pageable);
     }
 
     public Patient getPatientByEmail(String email) {
