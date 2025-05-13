@@ -1,12 +1,12 @@
 package com.wasilewskyy.medical_clinic.model;
 
+import com.wasilewskyy.medical_clinic.dto.CreatePatientCommand;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.util.Objects;
 
 @Data
 @AllArgsConstructor
@@ -53,13 +53,13 @@ public class Patient {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Patient)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
         Patient patient = (Patient) o;
         return id != null && id.equals(patient.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return getClass().hashCode();
     }
 }

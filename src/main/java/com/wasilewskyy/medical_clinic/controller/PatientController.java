@@ -2,10 +2,10 @@ package com.wasilewskyy.medical_clinic.controller;
 
 import com.wasilewskyy.medical_clinic.exception.ErrorMessage;
 import com.wasilewskyy.medical_clinic.mapper.PatientMapper;
-import com.wasilewskyy.medical_clinic.model.CreatePatientCommand;
+import com.wasilewskyy.medical_clinic.dto.CreatePatientCommand;
 import com.wasilewskyy.medical_clinic.model.Password;
-import com.wasilewskyy.medical_clinic.model.Patient;
-import com.wasilewskyy.medical_clinic.model.PatientDTO;
+
+import com.wasilewskyy.medical_clinic.dto.PatientDTO;
 import com.wasilewskyy.medical_clinic.service.PatientService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -14,11 +14,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
-import java.awt.print.Pageable;
 import java.util.List;
 
 @RestController
@@ -35,11 +33,10 @@ public class PatientController {
             content = @Content(mediaType = "application/json",
                     schema = @Schema(implementation = PatientDTO.class)))
     @GetMapping
-    public Page<PatientDTO> getAll(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
-        Page<Patient> patientsPage = patientService.getAllPatients();
-        return patientsPage.map(patientMapper::toDTO);
+    public List<PatientDTO> getAllPatients(Pageable pageable) {
+        return patientService.getAllPatients().stream()
+                .map(patientMapper::toDTO)
+                .toList();
     }
 
     @Operation(summary = "Get patient by email", description = "Returns a single patient by email.")

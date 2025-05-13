@@ -1,9 +1,9 @@
 package com.wasilewskyy.medical_clinic.controller;
 
 import com.wasilewskyy.medical_clinic.mapper.UserMapper;
-import com.wasilewskyy.medical_clinic.model.CreateUserCommand;
-import com.wasilewskyy.medical_clinic.model.PatientDTO;
-import com.wasilewskyy.medical_clinic.model.UserDTO;
+import com.wasilewskyy.medical_clinic.dto.CreateUserCommand;
+import com.wasilewskyy.medical_clinic.dto.PatientDTO;
+import com.wasilewskyy.medical_clinic.dto.UserDTO;
 import com.wasilewskyy.medical_clinic.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;

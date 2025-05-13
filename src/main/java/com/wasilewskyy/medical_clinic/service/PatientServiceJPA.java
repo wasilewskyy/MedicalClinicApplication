@@ -1,13 +1,12 @@
 package com.wasilewskyy.medical_clinic.service;
 
-import com.wasilewskyy.medical_clinic.model.CreatePatientCommand;
+import com.wasilewskyy.medical_clinic.dto.CreatePatientCommand;
 import com.wasilewskyy.medical_clinic.model.Patient;
 import com.wasilewskyy.medical_clinic.repository.PatientRepositoryJPA;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.awt.print.Pageable;
 import java.util.List;
 
 @Service
@@ -16,8 +15,8 @@ public class PatientServiceJPA {
 
     private final PatientRepositoryJPA patientRepositoryJPA;
 
-    public Page<Patient> getAllPatients(Pageable pageable) {
-        return patientRepositoryJPA.findAll(pageable);
+    public List<Patient> getAllPatients(Pageable pageable) {
+        return patientRepositoryJPA.findAll(pageable).getContent();
     }
 
     public Patient getPatientByEmail(String email) {

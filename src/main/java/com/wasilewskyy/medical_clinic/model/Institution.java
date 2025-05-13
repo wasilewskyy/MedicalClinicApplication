@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
-import java.util.Objects;
 
 @Data
 @AllArgsConstructor
@@ -33,12 +32,12 @@ public class Institution {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Institution that = (Institution) o;
-        return Objects.equals(id, that.id);
+        Institution institution = (Institution) o;
+        return id != null && id.equals(institution.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return getClass().hashCode();
     }
 }

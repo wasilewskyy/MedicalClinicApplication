@@ -2,7 +2,7 @@ package com.wasilewskyy.medical_clinic.controller;
 
 import com.wasilewskyy.medical_clinic.exception.ErrorMessage;
 import com.wasilewskyy.medical_clinic.mapper.InstitutionMapper;
-import com.wasilewskyy.medical_clinic.model.InstitutionDTO;
+import com.wasilewskyy.medical_clinic.dto.InstitutionDTO;
 import com.wasilewskyy.medical_clinic.service.InstitutionService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;

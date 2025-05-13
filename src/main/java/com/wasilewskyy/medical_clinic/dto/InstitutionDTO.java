@@ -1,4 +1,5 @@
-package com.wasilewskyy.medical_clinic.model;
+package com.wasilewskyy.medical_clinic.dto;
+import com.wasilewskyy.medical_clinic.model.Doctor;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

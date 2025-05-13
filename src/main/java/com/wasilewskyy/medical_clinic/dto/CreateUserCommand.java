@@ -1,4 +1,4 @@
-package com.wasilewskyy.medical_clinic.model;
+package com.wasilewskyy.medical_clinic.dto;
 
 
 import lombok.AllArgsConstructor;
