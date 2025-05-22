@@ -34,6 +34,9 @@ public class Doctor {
     )
     private List<Institution> institutions;
 
+    @OneToMany
+    private List<Visit> visits;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

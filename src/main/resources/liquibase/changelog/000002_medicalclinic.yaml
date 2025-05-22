@@ -1,0 +1,39 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2
+      author: kuba
+      changes:
+        - createTable:
+            tableName: VISITS
+            columns:
+              - column:
+                  name: ID
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: START_VISIT_DATE_TIME
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: END_VISIT_DATE_TIME
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: PATIENT_ID
+                  type: BIGINT
+                  constraints:
+                    foreignKey: true
+                    foreignKeyName: FK_VISIT_PATIENT
+                    nullable: false
+              - column:
+                  name: DOCTOR_ID
+                  type: BIGINT
+                  constraints:
+                    foreignKey: true
+                    foreignKeyName: FK_VISIT_DOCTOR
+                    nullable: false
