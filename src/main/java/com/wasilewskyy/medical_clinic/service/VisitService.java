@@ -7,12 +7,15 @@ import com.wasilewskyy.medical_clinic.model.Visit;
 import com.wasilewskyy.medical_clinic.repository.DoctorRepository;
 import com.wasilewskyy.medical_clinic.repository.PatientRepositoryJPA;
 import com.wasilewskyy.medical_clinic.repository.VisitRepository;
+import com.wasilewskyy.medical_clinic.validation.VisitValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+
+import static com.wasilewskyy.medical_clinic.validation.VisitValidator.validateVisitTime;
 
 @Service
 @RequiredArgsConstructor
@@ -21,11 +24,12 @@ public class VisitService {
     private final VisitRepository visitRepository;
     private final DoctorRepository doctorRepository;
     private final PatientRepositoryJPA patientRepository;
+    private VisitValidator visitValidator;
 
-    public Visit addVisit(CreateVisitCommand command, Long doctorId) {
+    public Visit addVisit(CreateVisitCommand command) {
         validateVisitTime(command.getStartVisitDateTime(), command.getEndVisitDateTime());
 
-        Doctor doctor = doctorRepository.findById(doctorId)
+        Doctor doctor = doctorRepository.findById(command.getDoctorId())
                 .orElseThrow(() -> new IllegalArgumentException("Doctor not found"));
 
         boolean overlaps = !visitRepository.isOverlapping(
@@ -36,10 +40,7 @@ public class VisitService {
             throw new IllegalArgumentException("Visit overlaps with an existing one for this doctor");
         }
 
-        Visit visit = new Visit();
-        visit.setDoctor(doctor);
-        visit.setStartVisitDateTime(command.getStartVisitDateTime());
-        visit.setEndVisitDateTime(command.getEndVisitDateTime());
+        Visit visit = Visit.createVisit(doctor, command);
         return visitRepository.save(visit);
     }
 
@@ -80,17 +81,5 @@ public class VisitService {
 
     public Page<Visit> getAvailableVisits(Pageable pageable) {
         return visitRepository.findAvailable(LocalDateTime.now(), pageable);
-    }
-
-    private void validateVisitTime(LocalDateTime start, LocalDateTime end) {
-        if (start.isBefore(LocalDateTime.now())) {
-            throw new IllegalArgumentException("Visit time must be in the future");
-        }
-        if (start.getMinute() % 15 != 0 || end.getMinute() % 15 != 0) {
-            throw new IllegalArgumentException("Visit must start/end on a 15-minute interval");
-        }
-        if (!end.isAfter(start)) {
-            throw new IllegalArgumentException("End time must be after start time");
-        }
     }
 }

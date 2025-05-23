@@ -10,7 +10,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
-
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/visits")
@@ -19,9 +18,9 @@ public class VisitController {
     private final VisitService visitService;
     private final VisitMapper visitMapper;
 
-    @PostMapping("/doctor/{doctorId}")
-    public VisitDTO createVisit(@PathVariable Long doctorId, @RequestBody CreateVisitCommand command) {
-        return visitMapper.toDTO(visitService.addVisit(command, doctorId));
+    @PostMapping
+    public VisitDTO createVisit(@RequestBody CreateVisitCommand command) {
+        return visitMapper.toDTO(visitService.addVisit(command));
     }
 
     @PostMapping("/{visitId}/assign")

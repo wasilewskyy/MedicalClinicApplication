@@ -30,6 +30,7 @@ databaseChangeLog:
                     foreignKey: true
                     foreignKeyName: FK_VISIT_PATIENT
                     nullable: false
+                    references: PATIENT(ID)
               - column:
                   name: DOCTOR_ID
                   type: BIGINT
@@ -37,3 +38,4 @@ databaseChangeLog:
                     foreignKey: true
                     foreignKeyName: FK_VISIT_DOCTOR
                     nullable: false
+                    references: DOCTOR(ID)

@@ -1,5 +1,6 @@
 package com.wasilewskyy.medical_clinic.model;
 
+import com.wasilewskyy.medical_clinic.dto.CreateVisitCommand;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,13 +21,21 @@ public class Visit {
     private LocalDateTime startVisitDateTime;
     private LocalDateTime endVisitDateTime;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "doctor_id", referencedColumnName = "id")
     private Doctor doctor;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "patient_id", referencedColumnName = "id")
     private Patient patient;
+
+    public static Visit createVisit(Doctor doctor, CreateVisitCommand command) {
+        Visit visit = new Visit();
+        visit.setDoctor(doctor);
+        visit.setStartVisitDateTime(command.getStartVisitDateTime());
+        visit.setEndVisitDateTime(command.getEndVisitDateTime());
+        return visit;
+    }
 
     @Override
     public boolean equals(Object o) {

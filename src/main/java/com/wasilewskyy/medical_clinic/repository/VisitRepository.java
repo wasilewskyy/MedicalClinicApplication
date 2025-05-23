@@ -6,6 +6,8 @@ import com.wasilewskyy.medical_clinic.model.Visit;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
@@ -19,7 +21,13 @@ public interface VisitRepository extends JpaRepository<Visit, Long> {
 
     Page<Visit> findAllByDoctor(Doctor doctor, Pageable pageable);
 
-    List<Visit> isOverlapping(LocalDateTime visitStart, LocalDateTime visitEnd, Doctor doctor);
+    @Query("SELECT visit FROM Visit visit " +
+            "WHERE visit.startVisitDateTime <= :newVisitEnd " +
+            "AND visit.endVisitDateTime >= :newVisitStart " +
+            "AND visit.doctor = :doctor")
+    List<Visit> isOverlapping(@Param("newVisitStart") LocalDateTime startVisitDateTime,
+                              @Param("newVisitEnd") LocalDateTime endVisitDateTime,
+                              @Param("doctor") Doctor doctor);
 
     Page<Visit> findAvailable(LocalDateTime now, Pageable pageable);
 
