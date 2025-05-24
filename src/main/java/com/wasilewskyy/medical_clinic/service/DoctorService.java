@@ -2,6 +2,7 @@ package com.wasilewskyy.medical_clinic.service;
 
 import com.wasilewskyy.medical_clinic.model.Doctor;
 import com.wasilewskyy.medical_clinic.repository.DoctorRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -22,14 +23,17 @@ public class DoctorService {
                 .orElseThrow(() -> new RuntimeException("Doctor not found"));
     }
 
+    @Transactional
     public Doctor save(Doctor doctor) {
         return doctorRepository.save(doctor);
     }
 
+    @Transactional
     public void delete(Long id) {
         doctorRepository.deleteById(id);
     }
 
+    @Transactional
     public Doctor update(Long id, Doctor updated) {
         Doctor existing = getById(id);
         updated.setId(existing.getId());

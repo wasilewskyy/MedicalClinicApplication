@@ -3,6 +3,7 @@ package com.wasilewskyy.medical_clinic.service;
 import com.wasilewskyy.medical_clinic.dto.CreatePatientCommand;
 import com.wasilewskyy.medical_clinic.model.Patient;
 import com.wasilewskyy.medical_clinic.repository.PatientRepositoryJPA;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -24,17 +25,20 @@ public class PatientServiceJPA {
                 .orElseThrow(() -> new IllegalArgumentException("Patient with given email does not exist."));
     }
 
+    @Transactional
     public Patient addPatient(Patient patient) {
         patientRepositoryJPA.save(patient);
         return patient;
     }
 
+    @Transactional
     public void deletePatientByEmail(String email) {
         Patient existingPatient = patientRepositoryJPA.findByEmail(email)
                 .orElseThrow(()-> new IllegalArgumentException("Patient with given email does not exist."));
         patientRepositoryJPA.delete(existingPatient);
     }
 
+    @Transactional
     public Patient updatePatient(String email, Patient updatedPatient, CreatePatientCommand command) {
         Patient existingPatient = patientRepositoryJPA.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("Patient with this email " + email +"does not exist"));

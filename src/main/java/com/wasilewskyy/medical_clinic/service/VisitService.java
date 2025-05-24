@@ -8,6 +8,7 @@ import com.wasilewskyy.medical_clinic.repository.DoctorRepository;
 import com.wasilewskyy.medical_clinic.repository.PatientRepositoryJPA;
 import com.wasilewskyy.medical_clinic.repository.VisitRepository;
 import com.wasilewskyy.medical_clinic.validation.VisitValidator;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,6 +27,7 @@ public class VisitService {
     private final PatientRepositoryJPA patientRepository;
     private VisitValidator visitValidator;
 
+    @Transactional
     public Visit addVisit(CreateVisitCommand command) {
         validateVisitTime(command.getStartVisitDateTime(), command.getEndVisitDateTime());
 
@@ -44,6 +46,7 @@ public class VisitService {
         return visitRepository.save(visit);
     }
 
+    @Transactional
     public Visit assignPatientToVisit(Long visitId, String patientEmail) {
         Visit visit = visitRepository.findById(visitId)
                 .orElseThrow(() -> new IllegalArgumentException("Visit not found"));
