@@ -2,10 +2,12 @@ package com.wasilewskyy.medical_clinic.service;
 
 import com.wasilewskyy.medical_clinic.model.Patient;
 import com.wasilewskyy.medical_clinic.repository.PatientRepository;
+import com.wasilewskyy.medical_clinic.validation.PatientValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -22,6 +24,7 @@ public class PatientService {
     }
 
     public Patient addPatient(Patient patient) {
+        PatientValidator.validateNewPatient(patient);
         patientRepository.save(patient);
         return patient;
     }
@@ -31,6 +34,11 @@ public class PatientService {
     }
 
     public Patient updatePatient(String email, Patient updatedPatient) {
+        Patient existingPatient = patientRepository.findByEmail(email);
+        if (existingPatient == null) {
+            throw new IllegalArgumentException("Patient with this email does not exist");
+        }
+        PatientValidator.validateUpdate(existingPatient, updatedPatient);
         patientRepository.update(email, updatedPatient);
         return updatedPatient;
     }

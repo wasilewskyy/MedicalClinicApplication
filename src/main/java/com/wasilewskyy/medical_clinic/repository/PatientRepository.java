@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -14,16 +15,18 @@ public class PatientRepository {
     private final List<Patient> patients = new ArrayList<>();
 
     public List<Patient> findAll() {
-        return patients;
+        return new ArrayList<>(patients);
     }
 
-    public Patient findByEmail(String email) {
+    public Optional<Patient> findByEmail(String email) {
         return patients.stream().filter(p -> p.getEmail().equals(email))
-                .findFirst()
-                .orElse(null);
+                .findFirst();
     }
 
     public void save(Patient patient) {
+        if (findByEmail(patient.getEmail()) != null) {
+            throw new IllegalArgumentException("Patient with email " + patient.getEmail() + " already exists");
+        }
         patients.add(patient);
     }
 
@@ -32,12 +35,13 @@ public class PatientRepository {
     }
 
     public void update(String email, Patient updatedPatient) {
-        for (int i = 0; i < patients.size(); i++) {
-            if (patients.get(i).getEmail().equals(email)) {
-                patients.set(i, updatedPatient);
-                return;
-            }
-        }
+        patients.stream()
+                .filter(patient -> patient.getEmail().equals(email))
+                .findFirst()
+                .ifPresent(patient -> {
+                    int index = patients.indexOf(patient);
+                    patients.set(index, updatedPatient);
+                });
     }
 }
 
